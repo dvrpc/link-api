@@ -6,16 +6,16 @@ This is an API for the [connect](https://github.com/dvrpc/connect) web map. It u
 ## Getting Started:
 Create an empty virtual environment with 
 ```shell
-> python -m venv ve
+python -m venv ve
 ```
 Then activate the environment. 
 ```shell
-> . ve/bin/activate
+. ve/bin/activate
 ```
 
 Install the requirements with 
 ```shell 
-> pip install -r requirements.txt
+pip install -r requirements.txt
 ```
 now that the environment is active. 
 
@@ -41,7 +41,7 @@ A DB_URI is necessary to connect to the DB.
 ## Development server
 Start the development server with
 ```shell
-> uvicorn main:app --reload
+uvicorn main:app --reload
 ```
 
 ## To-do:
