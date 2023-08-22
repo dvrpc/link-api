@@ -1,11 +1,16 @@
 from fastapi import FastAPI
+from routers import users
+from data_structures import models
+from data_structures.database import engine
 
-from routers import authentication
+models.Base.metadata.create_all(bind=engine)
+# from routers import authentication
 
 app = FastAPI()
 
 
-app.include_router(authentication.router)
+app.include_router(users.router)
+# app.include_router(authentication.router)
 
 
 @app.get("/")
