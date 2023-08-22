@@ -4,16 +4,19 @@
 This is an API for the [connect](https://github.com/dvrpc/connect) web map. It uses FastAPI and Postgres. It is still under development.
 
 ## Getting Started:
-Create an empty virtual environment with `python -m venv ve`.
-Then activate the environment. `. ve/bin/activate`
+Create an empty virtual environment with 
+`python -m venv ve`.
+Then activate the environment. 
+`. ve/bin/activate`
 
-Install the requirements with `pip install -r requirements.txt` now that the environment is active. 
+Install the requirements with 
+`pip install -r requirements.txt` 
+now that the environment is active. 
 
 ## Necessary parts
 You'll need a .env file at the root of the project. An example is below.
 ```
-SIGNATURE_KEY=12345678910ABCDEFGHIJKLMNOP  
-  
+SIGNATURE_KEY=12345678910ABCDEFGHIJKLMNOP
 ```
 
 A signature key is needed in order to sign/authenticate JSON web tokens.  
