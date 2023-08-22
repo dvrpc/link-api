@@ -47,6 +47,8 @@ Start the development server with
 ## To-do:
 * Finish readme
 * ~~build endpoint for OATH token generation~~
+* properly hash passwords in user creation, tie together user creation and authentication functions
+* add emails and email auth(?)
 * alter oath endpoints to pull users and hashed pw's from database rather than fake db
 * build endpoint for generic segment analysis
 * build endpoints to retrieve segment, blob, isochrone, user data
