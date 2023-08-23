@@ -9,6 +9,10 @@ class UserBase(BaseModel):
     username: str
 
 
+class UserInDB(UserBase):
+    hashed_password: str
+
+
 class UserCreate(UserBase):
     """This class inherits from userbase and adds a password"""
     password: str
