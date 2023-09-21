@@ -5,6 +5,11 @@ from pydantic import BaseModel
 # the SQLAlchemy tables.
 
 
+class GeoJson(BaseModel):
+    type: str
+    features: list
+
+
 class UserBase(BaseModel):
     username: str
 
