@@ -1,8 +1,6 @@
-from fastapi import Depends,  HTTPException,  APIRouter
-from sqlalchemy.orm import Session
+from fastapi import APIRouter
 from dotenv import load_dotenv
-from data_structures import schemas, crud
-from data_structures.database import get_db
+from data_structures import schemas
 
 load_dotenv()
 
@@ -10,6 +8,6 @@ router = APIRouter()
 
 
 @router.post("/analyze/")
-def analyze_segment(geo_json: schemas.GeoJson):
-    print(geo_json)
+def analyze_segment(data: schemas.AnalyzeRequest):
+    print(data)
     return {"message": "Data received"}
