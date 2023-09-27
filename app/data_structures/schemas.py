@@ -16,3 +16,8 @@ class AnalyzeRequest(BaseModel):
     connection_type: str
     geo_json: GeoJson
     username: str
+
+
+class UserStudies(BaseModel):
+    """For requesting all studies that belong to a user"""
+    username: str
