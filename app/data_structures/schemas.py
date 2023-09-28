@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from typing import List
 
 
 # This file is where Pydantic models live. As a note to self, Pydantic is more
@@ -18,6 +19,10 @@ class AnalyzeRequest(BaseModel):
     username: str
 
 
-class UserStudies(BaseModel):
-    """For requesting all studies that belong to a user"""
+class UserStudy(BaseModel):
     username: str
+    seg_name: str
+
+
+class UserStudies(BaseModel):
+    studies: List[UserStudy]

@@ -1,10 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from routers import analyze, get_user_studies
-from data_structures import models
-from data_structures.database import engine
 
-models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
