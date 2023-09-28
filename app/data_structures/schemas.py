@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from typing import List
 
 
@@ -26,3 +26,8 @@ class UserStudy(BaseModel):
 
 class UserStudies(BaseModel):
     studies: List[UserStudy]
+
+
+class RenameRequest(BaseModel):
+    oldName: str = Field(..., alias='oldName')
+    newName: str = Field(..., alias='newName')

@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from routers import analyze, get_user_studies
+from routers import analyze, get_user_studies, rename
 
 
 app = FastAPI()
@@ -16,6 +16,7 @@ app.add_middleware(
 
 app.include_router(analyze.router)
 app.include_router(get_user_studies.router)
+app.include_router(rename.router)
 
 
 @app.get("/")
