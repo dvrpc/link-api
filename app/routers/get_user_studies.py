@@ -2,7 +2,6 @@ from fastapi import APIRouter, Depends, Query
 from dotenv import load_dotenv
 from data_structures import schemas, database, crud
 from sqlalchemy.orm import Session
-import logging
 
 
 load_dotenv()
@@ -10,7 +9,7 @@ load_dotenv()
 router = APIRouter()
 
 
-@router.get("/get_user_studies", response_model=schemas.UserStudies)
+@router.get("/get_user_studies/", response_model=schemas.UserStudies)
 def user_studies(
         username: str,
         schema: str = Query(...,
