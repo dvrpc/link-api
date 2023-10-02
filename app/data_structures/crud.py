@@ -1,4 +1,5 @@
 from sqlalchemy.orm import Session
+from sqlalchemy.exc import DBAPIError
 from sqlalchemy import update
 from . import models
 
@@ -7,7 +8,13 @@ from . import models
 
 
 def get_projects_by_user(db: Session, username: str):
-    return db.query(models.Project).filter(models.Project.username == username).all()
+
+    try:
+        return db.query(models.Project).filter(
+            models.Project.username == username).all()
+    except DBAPIError:
+        return None
+
 # Update
 
 
