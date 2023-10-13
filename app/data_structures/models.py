@@ -10,4 +10,5 @@ class Project(Base):
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     username = Column(String, unique=True, index=True)
     seg_name = Column(String)
+    has_isochrone = Column(Boolean)
     # geom = Column(Geometry)

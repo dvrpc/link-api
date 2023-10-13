@@ -22,6 +22,7 @@ class AnalyzeRequest(BaseModel):
 class UserStudy(BaseModel):
     username: str
     seg_name: str
+    has_isochrone: bool
 
 
 class UserStudies(BaseModel):
