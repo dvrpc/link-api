@@ -1,5 +1,5 @@
 from pydantic import BaseModel, Field
-from typing import List
+from typing import List, Any
 
 
 # This file is where Pydantic models live. As a note to self, Pydantic is more
@@ -23,6 +23,15 @@ class UserStudy(BaseModel):
     username: str
     seg_name: str
     has_isochrone: bool
+    miles: float
+    total_pop: int
+    hisp_lat: int
+    circuit: Any
+    jobs: Any
+    bike_crashes: Any
+    ped_crashes: Any
+    essential_services: Any
+    rail_stations: Any
 
 
 class UserStudies(BaseModel):

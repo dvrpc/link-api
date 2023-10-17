@@ -21,5 +21,17 @@ def user_studies(
         return JSONResponse(content={"studies": ["No studies have been created yet!"]})
     else:
         db_studies_transformed = [
-            {"username": item.username, "seg_name": item.seg_name, "has_isochrone": item.has_isochrone} for item in db_studies]
+            {"username": item.username,
+                "seg_name": item.seg_name,
+                "has_isochrone": item.has_isochrone,
+                "miles": item.miles,
+                "total_pop": item.total_pop,
+                "hisp_lat": item.hisp_lat,
+                "circuit": item.circuit,
+                "jobs": item.jobs,
+                "bike_crashes": item.bike_crashes,
+                "ped_crashes": item.ped_crashes,
+                "essential_services": item.essential_services,
+                "rail_stations": item.rail_stations,
+             } for item in db_studies]
         return {"studies": db_studies_transformed}
