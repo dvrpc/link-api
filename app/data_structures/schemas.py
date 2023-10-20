@@ -1,15 +1,20 @@
 from pydantic import BaseModel, Field
-from typing import List, Any, Dict
+from typing import List, Any
 
 
 # This file is where Pydantic models live. As a note to self, Pydantic is more
 # for returning data from the API in a specific format. Doesn't have to include all of
 # the SQLAlchemy tables.
 
+class FeatureModel(BaseModel):
+    type: str
+    geometry: dict
+    properties: dict = Field(..., example={"name": "segment_name"})
+
 
 class GeoJson(BaseModel):
-    type: str = Field(..., example="FeatureCollection")
-    features: List[Dict]
+    type: str
+    features: list[FeatureModel]
 
 
 class AnalyzeRequest(BaseModel):
