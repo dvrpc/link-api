@@ -1,5 +1,5 @@
 from pydantic import BaseModel, Field
-from typing import List, Any
+from typing import List, Any, Dict
 
 
 # This file is where Pydantic models live. As a note to self, Pydantic is more
@@ -8,8 +8,8 @@ from typing import List, Any
 
 
 class GeoJson(BaseModel):
-    type: str
-    features: list
+    type: str = Field(..., example="FeatureCollection")
+    features: List[Dict]
 
 
 class AnalyzeRequest(BaseModel):
