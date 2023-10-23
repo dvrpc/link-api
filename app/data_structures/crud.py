@@ -10,9 +10,12 @@ from . import models
 def get_projects_by_user(db: Session, username: str):
 
     try:
-        return db.query(models.Project).filter(
-            models.Project.username == username).all()
-    except DBAPIError:
+        return db.query(models.UserSegments).filter(
+            models.UserSegments.username == username).all()
+    except DBAPIError as e:
+        print(f"DBAPIError occurred: {e}")
+        print(f"Statement: {e.statement}")
+        print(f"Params: {e.params}")
         return None
 
 # Update
@@ -20,8 +23,8 @@ def get_projects_by_user(db: Session, username: str):
 
 def rename_segment(db: Session, oldName: str, newName: str, username: str):
     stmt = (
-        update(models.Project)
-        .where((models.Project.username == username) & (models.Project.seg_name == oldName))
+        update(models.UserSegments)
+        .where((models.UserSegments.username == username) & (models.UserSegments.seg_name == oldName))
         .values(seg_name=newName)
     )
     db.execute(stmt)

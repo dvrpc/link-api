@@ -33,5 +33,6 @@ def user_studies(
                 "ped_crashes": item.ped_crashes,
                 "essential_services": item.essential_services,
                 "rail_stations": item.rail_stations,
+                # "geom": item.geom
              } for item in db_studies]
         return {"studies": db_studies_transformed}

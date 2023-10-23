@@ -37,6 +37,7 @@ class UserStudy(BaseModel):
     ped_crashes: Any
     essential_services: Any
     rail_stations: Any
+    # geom: Any
 
 
 class UserStudies(BaseModel):
