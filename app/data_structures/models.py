@@ -20,4 +20,10 @@ class Project(Base):
     ped_crashes = Column(JSON)
     essential_services = Column(JSON)
     rail_stations = Column(JSON)
-    # geom = Column(Geometry)
+    geom = Column(Geometry)
+
+
+class UserBlobs(Base):
+    __tablename__ = "user_blobs"
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    username = Column(String, unique=True, index=True)
