@@ -37,7 +37,12 @@ class UserStudy(BaseModel):
     ped_crashes: Any
     essential_services: Any
     rail_stations: Any
-    # geom: Any
+    geom: str
+
+    @classmethod
+    def from_orm(cls, obj):
+        geom = obj.geom.to_wkt()  # Replace with your conversion method
+        return cls(**obj.__dict__, geom=geom)
 
 
 class UserStudies(BaseModel):

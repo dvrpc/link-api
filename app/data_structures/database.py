@@ -9,7 +9,7 @@ DB_URI = os.getenv("DB_URI")
 
 
 def set_search_path(db, schema):
-    db.execute(text(f"SET search_path TO {schema}"))
+    db.execute(text(f"SET search_path TO {schema}, public"))
 
 
 def after_begin_bike(session, transaction, connection):
