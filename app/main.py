@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from routers import analyze, get_user_studies, rename
+from routers import analyze, get_user_studies, rename, get_user_geoms
 
 
 app = FastAPI()
@@ -17,8 +17,9 @@ app.add_middleware(
 app.include_router(analyze.router)
 app.include_router(get_user_studies.router)
 app.include_router(rename.router)
+app.include_router(get_user_geoms.router)
 
 
 @app.get("/")
 async def root():
-    return {"message": "More to come soon"}
+    return {"message": "Go to /docs!"}

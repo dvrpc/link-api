@@ -41,7 +41,7 @@ class UserStudy(BaseModel):
 
     @classmethod
     def from_orm(cls, obj):
-        geom = obj.geom.to_wkt()  # Replace with your conversion method
+        geom = obj.geom.to_wkt()
         return cls(**obj.__dict__, geom=geom)
 
 
@@ -52,3 +52,11 @@ class UserStudies(BaseModel):
 class RenameRequest(BaseModel):
     oldName: str = Field(..., alias='oldName')
     newName: str = Field(..., alias='newName')
+
+
+class Geom(BaseModel):
+    geom: str
+
+
+class UserGeoms(BaseModel):
+    List[Geom]

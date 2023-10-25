@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import DBAPIError
-from sqlalchemy import update
+from sqlalchemy import update, func
 from . import models
 
 # Create
@@ -12,6 +12,23 @@ def get_projects_by_user(db: Session, username: str):
     try:
         return db.query(models.UserSegments).filter(
             models.UserSegments.username == username).all()
+    except DBAPIError as e:
+        print(f"DBAPIError occurred: {e}")
+        print(f"Statement: {e.statement}")
+        print(f"Params: {e.params}")
+        return None
+
+
+def get_geoms_by_user_study(db: Session, username: str, study: str, model):
+
+    try:
+        return db.query(func.ST_AsGeoJSON(func.ST_Transform(model.geom, 4326)).label('geom_as_geojson')).\
+            select_from(models.UserSegments).\
+            join(model, models.UserSegments.id == model.id).\
+            filter(models.UserSegments.username == username).\
+            filter(models.UserSegments.seg_name == study).\
+            first()
+
     except DBAPIError as e:
         print(f"DBAPIError occurred: {e}")
         print(f"Statement: {e.statement}")
