@@ -1,20 +1,32 @@
 from pydantic import BaseModel, Field
-from typing import List, Any
+from typing import List, Any, Optional
+from enum import Enum
 
 
 # This file is where Pydantic models live. As a note to self, Pydantic is more
 # for returning data from the API in a specific format. Doesn't have to include all of
 # the SQLAlchemy tables.
+class Geometry(BaseModel):
+    type: str
+    coordinates: List[Any]
+
+
+class GeometryType(str, Enum):
+    Feature = "Feature"
+    Polygon = "Polygon"
+    Linestring = "Linestring"
+    Multilinestring = "Multilinestring"
+
 
 class FeatureModel(BaseModel):
-    type: str
-    geometry: dict
-    properties: dict = Field(..., example={"name": "segment_name"})
+    type: Optional[str] = None
+    geom: Optional[Geometry] = None
+    properties: Optional[dict] = None
 
 
 class GeoJson(BaseModel):
     type: str
-    features: list[FeatureModel]
+    features: List[FeatureModel]
 
 
 class AnalyzeRequest(BaseModel):
@@ -59,4 +71,7 @@ class Geom(BaseModel):
 
 
 class UserGeoms(BaseModel):
-    List[Geom]
+    segments: Optional[FeatureModel] = None
+    buffers: Optional[FeatureModel] = None
+    isochrones: Optional[FeatureModel] = None
+    blobs: Optional[FeatureModel] = None
