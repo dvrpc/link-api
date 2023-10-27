@@ -20,7 +20,7 @@ class GeometryType(str, Enum):
 
 class FeatureModel(BaseModel):
     type: Optional[str] = None
-    geom: Optional[Geometry] = None
+    geometry: Optional[Geometry] = None
     properties: Optional[dict] = None
 
 

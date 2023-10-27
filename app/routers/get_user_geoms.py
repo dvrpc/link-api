@@ -29,20 +29,20 @@ def user_study_geoms(
         db, username, study, models.UserIsochrones)
 
     if blobs:
-        response.blobs = json.loads(blobs.geom)
+        response.blobs = json.loads(blobs.geometry)
     else:
         response.blobs = schemas.FeatureModel(
-            type=None, geom=None, properties=None)
+            type=None, geometry=None, properties=None)
     if buffers:
-        response.buffers = json.loads(buffers.geom)
+        response.buffers = json.loads(buffers.geometry)
     else:
         response.buffers = schemas.FeatureModel(
-            type=None, geom=None, properties=None)
+            type=None, geometry=None, properties=None)
     if isochrones:
-        response.isochrones = json.loads(isochrones.geom)
+        response.isochrones = json.loads(isochrones.geometry)
     else:
         response.isochrones = schemas.FeatureModel(
-            type=None, geom=None, properties=None)
+            type=None, geometry=None, properties=None)
 
     if response is None:
         return JSONResponse(content={"geometries": ["No geometries exist!"]})

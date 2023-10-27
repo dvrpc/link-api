@@ -22,7 +22,7 @@ def get_projects_by_user(db: Session, username: str):
 def get_geoms_by_user_study(db: Session, username: str, study: str, model):
 
     try:
-        return db.query(func.ST_AsGeoJSON(func.ST_Transform(model.geom, 4326)).label('geom')).\
+        return db.query(func.ST_AsGeoJSON(func.ST_Transform(model.geom, 4326)).label('geometry')).\
             select_from(models.UserSegments).\
             join(model, models.UserSegments.id == model.id).\
             filter(models.UserSegments.username == username).\
