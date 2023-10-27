@@ -71,7 +71,6 @@ class Geom(BaseModel):
 
 
 class UserGeoms(BaseModel):
-    segments: Optional[FeatureModel] = None
     buffers: Optional[FeatureModel] = None
     isochrones: Optional[FeatureModel] = None
     blobs: Optional[FeatureModel] = None
