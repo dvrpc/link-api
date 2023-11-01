@@ -32,24 +32,24 @@ def user_study_geoms(
     if blobs:
         geom = json.loads(blobs.geometry)
         response.blobs = schemas.FeatureModel(
-            type="Feature", geometry=schemas.Geometry(type=geom['type'], coordinates=geom['coordinates']), properties=None)
+            type="Feature", geometry=schemas.Geometry(type=geom['type'], coordinates=geom['coordinates']), properties=None, id="blobs")
     else:
         response.blobs = schemas.FeatureModel(
-            type="Feature", geometry=None, properties=None)
+            type="Feature", geometry=None, properties=None, id="blobs")
     if buffers:
         geom = json.loads(buffers.geometry)
         response.buffers = schemas.FeatureModel(
-            type="Feature", geometry=schemas.Geometry(type=geom['type'], coordinates=geom['coordinates']), properties=None)
+            type="Feature", geometry=schemas.Geometry(type=geom['type'], coordinates=geom['coordinates']), properties=None, id="buffers")
     else:
         response.buffers = schemas.FeatureModel(
-            type="Feature", geometry=None, properties=None)
+            type="Feature", geometry=None, properties=None, id="blobs")
     if isochrones:
         geom = json.loads(isochrones.geometry)
         response.isochrones = schemas.FeatureModel(
-            type='Feature', geometry=schemas.Geometry(type=geom['type'], coordinates=geom['coordinates']), properties=None)
+            type='Feature', geometry=schemas.Geometry(type=geom['type'], coordinates=geom['coordinates']), properties=None, id=("isochrones"))
     else:
         response.isochrones = schemas.FeatureModel(
-            type="Feature", geometry=None, properties=None)
+            type="Feature", geometry=None, properties=None, id="blobs")
 
     feature_collection = schemas.FeatureCollection(
         features=[response.blobs, response.isochrones, response.buffers])
