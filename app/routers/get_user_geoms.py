@@ -10,7 +10,7 @@ load_dotenv()
 router = APIRouter()
 
 
-@router.get("/get_user_study_geoms/", response_model=schemas.UserGeoms)
+@router.get("/get_user_study_geoms/", response_model=schemas.FeatureCollection)
 def user_study_geoms(
         username: str,
         study: str,
@@ -23,35 +23,34 @@ def user_study_geoms(
 
     blobs = crud.get_geoms_by_user_study(
         db, username, study, models.UserBlobs)
+
     buffers = crud.get_geoms_by_user_study(
         db, username, study, models.UserBuffers)
     isochrones = crud.get_geoms_by_user_study(
         db, username, study, models.UserIsochrones)
 
     if blobs:
-        response.blobs = json.loads(blobs.geometry)
+        geom = json.loads(blobs.geometry)
+        response.blobs = schemas.FeatureModel(
+            type="Feature", geometry=schemas.Geometry(type=geom['type'], coordinates=geom['coordinates']), properties=None)
     else:
         response.blobs = schemas.FeatureModel(
-            type=None, geometry=None, properties=None)
+            type="Feature", geometry=None, properties=None)
     if buffers:
-        response.buffers = json.loads(buffers.geometry)
+        geom = json.loads(buffers.geometry)
+        response.buffers = schemas.FeatureModel(
+            type="Feature", geometry=schemas.Geometry(type=geom['type'], coordinates=geom['coordinates']), properties=None)
     else:
         response.buffers = schemas.FeatureModel(
-            type=None, geometry=None, properties=None)
+            type="Feature", geometry=None, properties=None)
     if isochrones:
-        response.isochrones = json.loads(isochrones.geometry)
+        geom = json.loads(isochrones.geometry)
+        response.isochrones = schemas.FeatureModel(
+            type='Feature', geometry=schemas.Geometry(type=geom['type'], coordinates=geom['coordinates']), properties=None)
     else:
         response.isochrones = schemas.FeatureModel(
-            type=None, geometry=None, properties=None)
+            type="Feature", geometry=None, properties=None)
 
-    if response is None:
-        return JSONResponse(content={"geometries": ["No geometries exist!"]})
-    else:
-        geojson_r = {
-            "blobs": response.blobs,
-            "isochrones": response.isochrones,
-            "buffers": response.buffers,
-        }
-
-        print(geojson_r)
-        return geojson_r
+    feature_collection = schemas.FeatureCollection(
+        features=[response.blobs, response.isochrones, response.buffers])
+    return feature_collection
