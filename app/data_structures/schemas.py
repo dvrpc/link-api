@@ -9,8 +9,8 @@ from enum import Enum
 class GeometryType(str, Enum):
     Feature = "Feature"
     Polygon = "Polygon"
-    Linestring = "Linestring"
-    Multilinestring = "Multilinestring"
+    Linetring = "LineString"
+    Multilinestring = "MultiLineString"
 
 
 class Geometry(BaseModel):
@@ -22,18 +22,12 @@ class FeatureModel(BaseModel):
     type: str = 'Feature'
     geometry: Optional[Geometry] = None
     properties: Optional[dict] = None
+    id: Optional[str] = None
 
 
 class GeoJson(BaseModel):
     type: str
     features: List[FeatureModel]
-
-
-class AnalyzeRequest(BaseModel):
-    """For any requests coming in from the analyze button."""
-    connection_type: str
-    geo_json: GeoJson
-    username: str
 
 
 class UserStudy(BaseModel):
@@ -79,3 +73,10 @@ class UserGeoms(BaseModel):
 class FeatureCollection(BaseModel):
     type: Literal["FeatureCollection"] = "FeatureCollection"
     features: List[FeatureModel]
+
+
+class AnalyzeRequest(BaseModel):
+    """For any requests coming in from the analyze button."""
+    connection_type: str
+    geo_json: FeatureCollection
+    username: str

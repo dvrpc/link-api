@@ -3,7 +3,6 @@ from dotenv import load_dotenv
 from data_structures import schemas
 from lts_island_connectivity import StudySegment
 
-
 load_dotenv()
 
 router = APIRouter()
