@@ -11,6 +11,7 @@ class GeometryType(str, Enum):
     Polygon = "Polygon"
     Linetring = "LineString"
     Multilinestring = "MultiLineString"
+    Multipolygon = "MultiPolygon"
 
 
 class Geometry(BaseModel):
