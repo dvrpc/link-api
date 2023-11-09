@@ -18,7 +18,7 @@ class UserSegments(Base):
     total_pop = Column(Integer)
     hisp_lat = Column(Integer)
     circuit = Column(JSON)
-    jobs = Column(JSON)
+    total_jobs = Column(Integer)
     bike_crashes = Column(JSON)
     ped_crashes = Column(JSON)
     essential_services = Column(JSON)

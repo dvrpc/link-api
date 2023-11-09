@@ -39,7 +39,7 @@ class UserStudy(BaseModel):
     total_pop: int
     hisp_lat: int
     circuit: Any
-    jobs: Any
+    total_jobs: Any
     bike_crashes: Any
     ped_crashes: Any
     essential_services: Any

@@ -28,7 +28,7 @@ def user_studies(
                 "total_pop": item.total_pop,
                 "hisp_lat": item.hisp_lat,
                 "circuit": item.circuit,
-                "jobs": item.jobs,
+                "total_jobs": item.total_jobs,
                 "bike_crashes": item.bike_crashes,
                 "ped_crashes": item.ped_crashes,
                 "essential_services": item.essential_services,
