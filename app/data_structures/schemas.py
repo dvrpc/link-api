@@ -81,3 +81,7 @@ class AnalyzeRequest(BaseModel):
     connection_type: str
     geo_json: FeatureCollection
     username: str
+
+
+class AnalyzeResponse(BaseModel):
+    message: str
