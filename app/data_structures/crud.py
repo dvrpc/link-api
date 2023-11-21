@@ -35,6 +35,23 @@ def get_geoms_by_user_study(db: Session, username: str, study: str, model):
         print(f"Params: {e.params}")
         return None
 
+
+def get_segment_geoms_by_user_study(db: Session, username: str, study: str, model):
+
+    try:
+        return db.query(func.ST_AsGeoJSON(func.ST_Transform(model.geom, 4326)).label('geometry')).\
+            select_from(models.UserSegments).\
+            filter(models.UserSegments.id == model.id).\
+            filter(models.UserSegments.username == username).\
+            filter(models.UserSegments.seg_name == study).\
+            first()
+
+    except DBAPIError as e:
+        print(f"DBAPIError occurred: {e}")
+        print(f"Statement: {e.statement}")
+        print(f"Params: {e.params}")
+        return None
+
 # Update
 
 

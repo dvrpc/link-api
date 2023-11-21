@@ -71,6 +71,10 @@ class UserGeoms(BaseModel):
     blobs: Optional[FeatureModel] = None
 
 
+class UserSegments(BaseModel):
+    segments: Optional[FeatureModel] = None
+
+
 class FeatureCollection(BaseModel):
     type: Literal["FeatureCollection"] = "FeatureCollection"
     features: List[FeatureModel]

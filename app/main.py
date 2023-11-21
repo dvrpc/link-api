@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from routers import analyze, get_user_studies, rename, get_user_geoms, get_csv
+from routers import analyze, get_user_studies, rename, get_user_geoms, get_csv, get_user_segment
 
 
 app = FastAPI()
@@ -19,6 +19,7 @@ app.include_router(get_user_studies.router)
 app.include_router(rename.router)
 app.include_router(get_user_geoms.router)
 app.include_router(get_csv.router)
+app.include_router(get_user_segment.router)
 
 
 @app.get("/")
