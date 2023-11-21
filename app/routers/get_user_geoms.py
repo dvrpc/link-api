@@ -2,8 +2,8 @@ from fastapi import APIRouter, Depends, Query
 from dotenv import load_dotenv
 from data_structures import schemas, database, crud, models
 from sqlalchemy.orm import Session
-from fastapi.responses import JSONResponse
 import json
+from fastapi.responses import JSONResponse
 
 load_dotenv()
 
@@ -50,6 +50,14 @@ def user_study_geoms(
     else:
         response.isochrones = schemas.FeatureModel(
             type="Feature", geometry=None, properties=None, id="isochrones")
+
+    if not blobs and not buffers and not isochrones:
+        # No geometries found, return an error response
+        return JSONResponse(
+            status_code=404,
+            content={
+                "message": "No geometries found for the specified user and study."}
+        )
 
     feature_collection = schemas.FeatureCollection(
         features=[response.blobs, response.isochrones, response.buffers])
