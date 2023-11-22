@@ -19,7 +19,7 @@ def user_studies(
         # Handle no studies found
         return JSONResponse(
             status_code=404,
-            content={"message": "No studies have been created yet."}
+            content={"studies": ["No studies have been created yet!"]}
         )
 
     db_studies_transformed = []
