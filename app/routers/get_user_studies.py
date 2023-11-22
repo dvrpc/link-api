@@ -18,7 +18,6 @@ def user_studies(
     if db_studies is None:
         # Handle no studies found
         return JSONResponse(
-            status_code=404,
             content={"studies": ["No studies have been created yet!"]}
         )
 
