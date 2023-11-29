@@ -36,8 +36,12 @@ Base: DeclarativeMeta = declarative_base()
 
 def get_db_for_schema(schema: str):
     if schema == 'lts':
-        return SessionLocalBike()
+        db = SessionLocalBike()
     elif schema == 'sidewalk':
-        return SessionLocalPed()
+        db = SessionLocalPed()
     else:
         raise ValueError("Invalid schema")
+    try:
+        yield db
+    finally:
+        db.close()

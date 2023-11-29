@@ -16,7 +16,6 @@ def user_study_geoms(
         schema: str = Query(...,
                             description="The schema to use (lts or sidewalk)"),
         db: Session = Depends(database.get_db_for_schema)):
-    db: Session = database.get_db_for_schema(schema)
 
     response = schemas.UserSegments()
     segments = crud.get_segment_geoms_by_user_study(
