@@ -40,8 +40,7 @@ class UserStudy(BaseModel):
     hisp_lat: int
     circuit: Any
     total_jobs: Any
-    bike_crashes: Any
-    ped_crashes: Any
+    bike_ped_crashes: Any
     essential_services: Any
     rail_stations: Any
     geom: str
