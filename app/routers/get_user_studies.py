@@ -32,8 +32,7 @@ def user_studies(
             "hisp_lat": item.hisp_lat if item.hisp_lat is not None else 0,
             "circuit": item.circuit,
             "total_jobs": item.total_jobs if item.total_jobs is not None else 0,
-            "bike_crashes": item.bike_crashes if item.bike_crashes is not None else 0,
-            "ped_crashes": item.ped_crashes if item.ped_crashes is not None else 0,
+            "bike_ped_crashes": item.bike_ped_crashes if item.bike_ped_crashes is not None else 0,
             "essential_services": item.essential_services if item.essential_services is not None else 0,
             "rail_stations": item.rail_stations if item.rail_stations is not None else 0,
             "geom": str(item.geom)
