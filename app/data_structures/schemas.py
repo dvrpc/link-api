@@ -37,7 +37,15 @@ class UserStudy(BaseModel):
     has_isochrone: bool
     miles: float
     total_pop: int
-    hisp_lat: int
+    disabled: int
+    ethnic_minority: int
+    female: int
+    foreign_born: int
+    lep: int
+    low_income: int
+    older_adult: int
+    racial_minority: int
+    youth: int
     circuit: Any
     total_jobs: Any
     bike_ped_crashes: Any
