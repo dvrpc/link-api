@@ -10,18 +10,12 @@ router = APIRouter()
 
 
 @router.post("/rename/")
-def analyze_segment(data: schemas.RenameRequest,
-                    username: str = Query(...,
-                                          description="the user who is renaming"),
-                    schema: str = Query(...,
-                                        description="The schema to use (lts or sidewalk)"),
-                    db: Session = Depends(database.get_db_for_schema)
-
-
-                    ):
-
-    db: Session = database.get_db_for_schema(schema)
-    db_studies = crud.rename_segment(
-        db, data.oldName, data.newName, username)
+def analyze_segment(
+    data: schemas.RenameRequest,
+    username: str = Query(..., description="the user who is renaming"),
+    schema: str = Query(..., description="The schema to use (lts or sidewalk)"),
+    db: Session = Depends(database.get_db_for_schema),
+):
+    db_studies = crud.rename_segment(db, data.oldName, data.newName, username)
 
     return {"message": f"Data received: {db_studies}"}
