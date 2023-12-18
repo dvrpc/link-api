@@ -11,7 +11,7 @@ def get_projects_by_user(db: Session, username: str):
     try:
         return db.query(models.UserSegments).filter(
             models.UserSegments.username == username).filter(
-                or_(models.UserSegments.deleted is False,
+                or_(models.UserSegments.deleted.is_(False),
                     models.UserSegments.deleted.is_(None))
         ).all()
     except DBAPIError as e:
