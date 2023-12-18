@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import DBAPIError
-from sqlalchemy import update, func, or_
+from sqlalchemy import update, func, or_, and_
 from . import models
 
 # Create
@@ -66,3 +66,18 @@ def rename_segment(db: Session, oldName: str, newName: str, username: str):
     db.execute(stmt)
     db.commit()
 # Delete
+
+
+def delete_study(db: Session, username: str, seg_name: str):
+    stmt = (
+        update(models.UserSegments)
+        .where(
+            and_(
+                models.UserSegments.username == username,
+                models.UserSegments.seg_name == seg_name
+            )
+        )
+        .values(deleted=True)
+    )
+    db.execute(stmt)
+    db.commit()
