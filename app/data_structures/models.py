@@ -30,6 +30,7 @@ class UserSegments(Base):
     bike_ped_crashes = Column(JSON)
     essential_services = Column(JSON)
     rail_stations = Column(JSON)
+    deleted = Column(Boolean)
     geom = Column(Geometry(geometry_type="LINESTRING", srid=4326))
 
     user_blobs = relationship(

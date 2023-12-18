@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import DBAPIError
-from sqlalchemy import update, func
+from sqlalchemy import update, func, or_
 from . import models
 
 # Create
@@ -8,10 +8,12 @@ from . import models
 
 
 def get_projects_by_user(db: Session, username: str):
-
     try:
         return db.query(models.UserSegments).filter(
-            models.UserSegments.username == username).all()
+            models.UserSegments.username == username).filter(
+                or_(models.UserSegments.deleted is False,
+                    models.UserSegments.deleted.is_(None))
+        ).all()
     except DBAPIError as e:
         print(f"DBAPIError occurred: {e}")
         print(f"Statement: {e.statement}")
