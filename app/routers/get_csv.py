@@ -10,7 +10,8 @@ router = APIRouter()
 
 @router.get("/get-csv/")
 def get_csv(response: Response, schema: str,  username: str, db: Session = Depends(database.get_db_for_schema)):
-    query = text(f"SELECT * FROM {schema}.user_segments")
+    query = text(
+        f"SELECT * FROM {schema}.user_segments where deleted is not true")
 
     result = db.execute(query)
 
