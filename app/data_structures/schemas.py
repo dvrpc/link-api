@@ -51,6 +51,7 @@ class UserStudy(BaseModel):
     bike_ped_crashes: Any
     essential_services: Any
     rail_stations: Any
+    deleted: bool
     geom: str
 
     @classmethod

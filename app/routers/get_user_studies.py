@@ -8,19 +8,21 @@ router = APIRouter()
 
 @router.get("/get_user_studies/", response_model=schemas.UserStudies)
 def user_studies(
-        username: str,
-        schema: str = Query(...,
-                            description="The schema to use (lts or sidewalk)"),
+        username: str = None,  # Optional parameter
+        schema: str = Query(
+            None, description="The schema to use (lts or sidewalk)"),
         db: Session = Depends(database.get_db_for_schema)):
 
-    db_studies = crud.get_projects_by_user(db, username)
+    if username is None:
+        db_studies = crud.get_all_projects(db)
+    else:
+        db_studies = crud.get_projects_by_user(
+            db, username)
 
-    if db_studies is None:
-        # Handle no studies found
+    if db_studies is None or len(db_studies) == 0:
         return JSONResponse(
             content={"studies": ["No studies have been created yet!"]}
         )
-
     db_studies_transformed = []
     for item in db_studies:
         study_info = {
@@ -43,6 +45,7 @@ def user_studies(
             "bike_ped_crashes": item.bike_ped_crashes if item.bike_ped_crashes is not None else 0,
             "essential_services": item.essential_services if item.essential_services is not None else 0,
             "rail_stations": item.rail_stations if item.rail_stations is not None else 0,
+            "deleted": item.deleted if item.deleted is not None else False,
             "geom": str(item.geom)
         }
         db_studies_transformed.append(study_info)

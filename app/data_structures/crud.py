@@ -21,6 +21,16 @@ def get_projects_by_user(db: Session, username: str):
         return None
 
 
+def get_all_projects(db: Session, ):
+    try:
+        return db.query(models.UserSegments).all()
+    except DBAPIError as e:
+        print(f"DBAPIError occurred: {e}")
+        print(f"Statement: {e.statement}")
+        print(f"Params: {e.params}")
+        return None
+
+
 def get_geoms_by_user_study(db: Session, username: str, study: str, model):
 
     try:
