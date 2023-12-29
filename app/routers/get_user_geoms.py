@@ -7,7 +7,8 @@ from fastapi.responses import JSONResponse
 import os
 import zipfile
 from fastapi.responses import FileResponse
-from .get_user_segment import get_segment_geometries
+import tempfile
+import shutil
 
 load_dotenv()
 
@@ -68,33 +69,31 @@ def format_as_feature_collection(blobs, buffers, isochrones):
     return feature_collection
 
 
-def save_as_geojson_and_zip(blobs, buffers, isochrones, username, study, segments=None):
-    temp_dir = "link_tool"
-    os.makedirs(temp_dir, exist_ok=True)
-    geojson_files = []
-    print(segments)
-    for geom_type, geom in [('blobs', blobs), ('buffers', buffers), ('isochrones', isochrones), ('segments', segments)]:
-        if geom:
-            file_path = os.path.join(
-                temp_dir, f"{geom_type}_{username}_{study}.geojson")
-            with open(file_path, 'w') as file:
-                json.dump(
-                    {"type": "Feature", "geometry": json.loads(geom.geometry)}, file)
-            geojson_files.append(file_path)
+def save_as_geojson_and_zip(blobs, buffers, isochrones, username, study, segments):
+    final_zip_path = f"{study}_{username}_link_tool_geoms.zip"
 
-    if not geojson_files:
-        raise ValueError("No geometries found.")
+    with tempfile.TemporaryDirectory() as temp_dir:
+        geojson_files = []
+        for geom_type, geom in [('blobs', blobs), ('buffers', buffers), ('isochrones', isochrones), ('segments', segments)]:
+            if geom:
+                file_path = os.path.join(
+                    temp_dir, f"{geom_type}_{username}_{study}.geojson")
+                with open(file_path, 'w') as file:
+                    json.dump(
+                        {"type": "Feature", "geometry": json.loads(geom.geometry)}, file)
+                geojson_files.append(file_path)
 
-    zip_filename = os.path.join(
-        temp_dir, f"user_study_geoms_{username}_{study}.zip")
-    with zipfile.ZipFile(zip_filename, 'w') as zipf:
-        for file in geojson_files:
-            zipf.write(file, os.path.basename(file))
+        if not geojson_files:
+            raise ValueError("No geometries found.")
 
-    for file in geojson_files:
-        os.remove(file)
+        zip_filename = os.path.join(temp_dir, final_zip_path)
+        with zipfile.ZipFile(zip_filename, 'w') as zipf:
+            for file in geojson_files:
+                zipf.write(file, os.path.basename(file))
 
-    return zip_filename
+        shutil.copy(zip_filename, final_zip_path)
+
+    return final_zip_path
 
 
 @router.get("/get_user_study_geoms/", response_model=schemas.FeatureCollection)
