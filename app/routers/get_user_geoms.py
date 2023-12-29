@@ -85,6 +85,12 @@ def save_as_geojson_and_zip(blobs, buffers, isochrones, segments, username, stud
                 zipf.write(file_path, os.path.basename(file_path))
                 os.remove(file_path)
 
+        text_file_name = "readme.txt"
+        with open(text_file_name, 'w') as text_file:
+            text_file.write("Blobs are the islands formed by the low stress network, either LTS 1 and 2 roads, or existing sidewalks. \n\nSegments are the geometries you created for this study. This is the only geojson that can be re-uploaded into the Link tool- other shapes will not work. Only lines. \n\nBuffers are buffers around your study segment, which grab any touching islands and add them to the analysis.")
+        zipf.write(text_file_name, os.path.basename(text_file_name))
+        os.remove(text_file_name)
+
     return zip_temp_path
 
 
