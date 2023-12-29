@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, Query
+from fastapi import APIRouter, Depends, Query, BackgroundTasks
 from dotenv import load_dotenv
 from data_structures import schemas, database, crud, models
 from sqlalchemy.orm import Session
@@ -8,11 +8,14 @@ import os
 import zipfile
 from fastapi.responses import FileResponse
 import tempfile
-import shutil
 
 load_dotenv()
 
 router = APIRouter()
+
+
+def remove_file_later(path: str, background_tasks: BackgroundTasks):
+    background_tasks.add_task(os.remove, path)
 
 
 def fetch_user_study_geoms(username: str, study: str, db: Session):
@@ -69,31 +72,20 @@ def format_as_feature_collection(blobs, buffers, isochrones):
     return feature_collection
 
 
-def save_as_geojson_and_zip(blobs, buffers, isochrones, username, study, segments):
-    final_zip_path = f"{study}_{username}_link_tool_geoms.zip"
+def save_as_geojson_and_zip(blobs, buffers, isochrones, segments, username, study):
+    zip_temp_path = tempfile.mktemp(suffix=".zip")
 
-    with tempfile.TemporaryDirectory() as temp_dir:
-        geojson_files = []
+    with zipfile.ZipFile(zip_temp_path, 'w') as zipf:
         for geom_type, geom in [('blobs', blobs), ('buffers', buffers), ('isochrones', isochrones), ('segments', segments)]:
             if geom:
-                file_path = os.path.join(
-                    temp_dir, f"{geom_type}_{username}_{study}.geojson")
+                file_path = f"{geom_type}_{username}_{study}.geojson"
                 with open(file_path, 'w') as file:
                     json.dump(
                         {"type": "Feature", "geometry": json.loads(geom.geometry)}, file)
-                geojson_files.append(file_path)
+                zipf.write(file_path, os.path.basename(file_path))
+                os.remove(file_path)
 
-        if not geojson_files:
-            raise ValueError("No geometries found.")
-
-        zip_filename = os.path.join(temp_dir, final_zip_path)
-        with zipfile.ZipFile(zip_filename, 'w') as zipf:
-            for file in geojson_files:
-                zipf.write(file, os.path.basename(file))
-
-        shutil.copy(zip_filename, final_zip_path)
-
-    return final_zip_path
+    return zip_temp_path
 
 
 @router.get("/get_user_study_geoms/", response_model=schemas.FeatureCollection)
@@ -103,9 +95,12 @@ def user_study_geoms(username: str, study: str, schema: str = Query(...), db: Se
 
 
 @router.get("/download_user_study_geoms/")
-def download_user_study_geoms(username: str, study: str, schema: str = Query(...), db: Session = Depends(database.get_db_for_schema)):
+async def download_user_study_geoms(username: str, study: str, schema: str = Query(...), db: Session = Depends(database.get_db_for_schema), background_tasks: BackgroundTasks = BackgroundTasks()):
     blobs, buffers, isochrones = fetch_user_study_geoms(username, study, db)
     segments = fetch_segment_geoms(username, study, db)
-    zip_filename = save_as_geojson_and_zip(
-        blobs, buffers, isochrones, username, study, segments)
-    return FileResponse(zip_filename, media_type='application/octet-stream', filename=zip_filename)
+    zip_temp_path = save_as_geojson_and_zip(
+        blobs, buffers, isochrones, segments, username, study)
+
+    background_tasks.add_task(os.remove, zip_temp_path)
+
+    return FileResponse(path=zip_temp_path, filename=os.path.basename(f"{study}_link_tool_geoms_{username}.zip"), media_type='application/octet-stream')
