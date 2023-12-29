@@ -9,14 +9,8 @@ load_dotenv()
 router = APIRouter()
 
 
-@router.get("/get_user_segment/", response_model=schemas.FeatureCollection)
-def user_study_geoms(
-        username: str,
-        study: str,
-        schema: str = Query(...,
-                            description="The schema to use (lts or sidewalk)"),
-        db: Session = Depends(database.get_db_for_schema)):
-
+def get_segment_geometries(username: str, study: str, db: Session):
+    # Your logic to fetch segment geometries
     response = schemas.UserSegments()
     segments = crud.get_segment_geoms_by_user_study(
         db, username, study, models.UserSegments)
@@ -32,3 +26,13 @@ def user_study_geoms(
     feature_collection = schemas.FeatureCollection(
         features=[response.segments])
     return feature_collection
+
+
+@router.get("/get_user_segment/", response_model=schemas.FeatureCollection)
+def user_study_segment_geoms(
+        username: str,
+        study: str,
+        schema: str = Query(...,
+                            description="The schema to use (lts or sidewalk)"),
+        db: Session = Depends(database.get_db_for_schema)):
+    return get_segment_geometries(username, study, db)
