@@ -22,7 +22,7 @@ Then activate the environment.
 
 #### 2. Install the requirements with:
 ```shell 
-pip install -r requirements.txt
+pip install wheel && pip install -r requirements.txt
 ```
 
 #### 3. Add a .env file 
