@@ -46,6 +46,7 @@ def user_studies(
             "essential_services": item.essential_services if item.essential_services is not None else 0,
             "rail_stations": item.rail_stations if item.rail_stations is not None else 0,
             "deleted": item.deleted if item.deleted is not None else False,
+            "shared": item.shared if item.shared is not None else False,
             "geom": str(item.geom)
         }
         db_studies_transformed.append(study_info)

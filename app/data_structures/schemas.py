@@ -52,6 +52,7 @@ class UserStudy(BaseModel):
     essential_services: Any
     rail_stations: Any
     deleted: bool
+    shared: bool
     geom: str
 
     @classmethod
