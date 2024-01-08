@@ -75,6 +75,22 @@ def rename_segment(db: Session, oldName: str, newName: str, username: str):
     )
     db.execute(stmt)
     db.commit()
+
+
+def share_study(db: Session, username: str, seg_name: str, share: bool):
+    stmt = (
+        update(models.UserSegments)
+        .where(
+            and_(
+                models.UserSegments.username == username,
+                models.UserSegments.seg_name == seg_name
+            )
+        )
+        .values(shared=share)
+    )
+    db.execute(stmt)
+    db.commit()
+
 # Delete
 
 
