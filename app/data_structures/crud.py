@@ -31,6 +31,10 @@ def get_all_projects(db: Session, ):
         return None
 
 
+def get_project_by_name(db: Session, study_name: str):
+    return db.query(models.UserSegments).filter(models.UserSegments.seg_name == study_name).first()
+
+
 def get_geoms_by_user_study(db: Session, username: str, study: str, model):
 
     try:

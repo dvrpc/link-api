@@ -11,20 +11,11 @@ def user_studies(
         username: str = None,  # Optional parameter
         schema: str = Query(
             None, description="The schema to use (lts or sidewalk)"),
+        study_name: str = Query(
+            None, description="The name of the study to get, optional"),
         db: Session = Depends(database.get_db_for_schema)):
 
-    if username is None:
-        db_studies = crud.get_all_projects(db)
-    else:
-        db_studies = crud.get_projects_by_user(
-            db, username)
-
-    if db_studies is None or len(db_studies) == 0:
-        return JSONResponse(
-            content={"studies": ["No studies have been created yet!"]}
-        )
-    db_studies_transformed = []
-    for item in db_studies:
+    def standardize_outputs(item, db_studies_transformed):
         study_info = {
             "username": item.username,
             "seg_name": item.seg_name,
@@ -50,5 +41,33 @@ def user_studies(
             "geom": str(item.geom)
         }
         db_studies_transformed.append(study_info)
+        return db_studies_transformed
+
+    if study_name:
+        db_study = crud.get_project_by_name(db, study_name)
+        if db_study:
+            db_studies_transformed = standardize_outputs(db_study, [])
+            return {"studies": db_studies_transformed}
+        else:
+            return JSONResponse(
+                content={"studies": ["Study not found!"]},
+                status_code=404
+            )
+
+    if username is None:
+        db_studies = crud.get_all_projects(db)
+    else:
+        db_studies = crud.get_projects_by_user(
+            db, username)
+
+    if db_studies is None or len(db_studies) == 0:
+        return JSONResponse(
+            content={"studies": ["No studies have been created yet!"]}
+        )
+    db_studies_transformed = []
+
+    for item in db_studies:
+        db_studies_transformed = standardize_outputs(
+            item, db_studies_transformed)
 
     return {"studies": db_studies_transformed}
