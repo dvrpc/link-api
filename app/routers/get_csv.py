@@ -1,17 +1,28 @@
-from fastapi import Response, APIRouter, Depends
-from data_structures import database
-from sqlalchemy.sql import text
-from sqlalchemy.orm import Session
 import csv
 import io
+import os
+
+from dotenv import load_dotenv
+from sqlalchemy.sql import text
+from sqlalchemy.orm import Session
+from fastapi import APIRouter, Depends, Response
+
+from data_structures import database
+
+load_dotenv()
+URL_ROOT = os.environ.get("URL_ROOT", "")
 
 router = APIRouter()
 
 
-@router.get("/get-csv/")
-def get_csv(response: Response, schema: str,  username: str, db: Session = Depends(database.get_db_for_schema)):
-    query = text(
-        f"SELECT * FROM {schema}.user_segments where deleted is not true")
+@router.get(f"{URL_ROOT}/get-csv/")
+def get_csv(
+    response: Response,
+    schema: str,
+    username: str,
+    db: Session = Depends(database.get_db_for_schema),
+):
+    query = text(f"SELECT * FROM {schema}.user_segments where deleted is not true")
 
     result = db.execute(query)
 

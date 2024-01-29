@@ -34,13 +34,19 @@ Then activate the environment.
 
 #### 3. Install the requirements with:
 ```shell 
-pip install wheel && pip install -r requirements.txt
+pip install wheel && pip install -r requirements_base.txt
 ```
 
 #### 4. Add a .env file 
 Create a .env file at the root of the project. An example is below, which contains a URI to a database.
 ```
 DB_URI=postgresql://user:pw@host:port/db
+```
+
+You may also alter the path by including a URL_ROOT variable (that starts with a `/`). If not included, it will not be used.
+```
+DB_URI=postgresql://user:pw@host:port/db
+URL_ROOT=/api
 ```
 
 #### 5. Add config file for pg-data-etl
@@ -63,9 +69,11 @@ psql -U your_username -h your_host -p your_port -d target_database < backup.sql
 ## Usage
 Start the development server with
 ```shell
+cd app
 uvicorn main:app --reload
 ```
-See what API calls are supported by visiting [localhost:8000/docs](localhost:8000/docs).
+See what API calls are supported by visiting [localhost:8000/docs](localhost:8000/docs). (Note that if you set `URL_ROOT`, this would be different, e.g. a `URL_ROOT` of `/api ` would result in [localhost:8000/api/docs](localhost:8000/api/docs)). 
+
 
 ## License
 The project uses the GPL 3.0 license.
