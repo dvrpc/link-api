@@ -1,7 +1,7 @@
-# connect-api
+# link-api
 
 ## Overview
-This is an API for the [connect](https://github.com/dvrpc/connect) react app. 
+This is an API for the [Link](https://github.com/dvrpc/link) react app. 
 
 It uses: 
 * FastAPI
