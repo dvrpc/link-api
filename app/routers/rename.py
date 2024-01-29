@@ -1,15 +1,18 @@
-from fastapi import APIRouter, Query, Depends
+import os
+
 from dotenv import load_dotenv
-from data_structures import schemas, database, crud
+from fastapi import APIRouter, Depends, Query
 from sqlalchemy.orm import Session
 
+from data_structures import crud, database, schemas
 
 load_dotenv()
+URL_ROOT = os.getenv("URL_ROOT")
 
 router = APIRouter()
 
 
-@router.post("/rename/")
+@router.post(f"{URL_ROOT}/rename/")
 def analyze_segment(
     data: schemas.RenameRequest,
     username: str = Query(..., description="the user who is renaming"),

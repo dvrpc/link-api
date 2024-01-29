@@ -1,20 +1,25 @@
+import os
+
+from dotenv import load_dotenv
 from fastapi import APIRouter, Depends, Query
 from fastapi.responses import JSONResponse
-from data_structures import schemas, database, crud
 from sqlalchemy.orm import Session
+
+from data_structures import crud, database, schemas
+
+load_dotenv()
+URL_ROOT = os.getenv("URL_ROOT")
 
 router = APIRouter()
 
 
-@router.get("/get_user_studies/", response_model=schemas.UserStudies)
+@router.get(f"{URL_ROOT}/get_user_studies/", response_model=schemas.UserStudies)
 def user_studies(
-        username: str = None,  # Optional parameter
-        schema: str = Query(
-            None, description="The schema to use (lts or sidewalk)"),
-        study_name: str = Query(
-            None, description="The name of the study to get, optional"),
-        db: Session = Depends(database.get_db_for_schema)):
-
+    username: str = None,  # Optional parameter
+    schema: str = Query(None, description="The schema to use (lts or sidewalk)"),
+    study_name: str = Query(None, description="The name of the study to get, optional"),
+    db: Session = Depends(database.get_db_for_schema),
+):
     def standardize_outputs(item, db_studies_transformed):
         study_info = {
             "username": item.username,
@@ -34,11 +39,13 @@ def user_studies(
             "circuit": item.circuit,
             "total_jobs": item.total_jobs if item.total_jobs is not None else 0,
             "bike_ped_crashes": item.bike_ped_crashes if item.bike_ped_crashes is not None else 0,
-            "essential_services": item.essential_services if item.essential_services is not None else 0,
+            "essential_services": item.essential_services
+            if item.essential_services is not None
+            else 0,
             "rail_stations": item.rail_stations if item.rail_stations is not None else 0,
             "deleted": item.deleted if item.deleted is not None else False,
             "shared": item.shared if item.shared is not None else False,
-            "geom": str(item.geom)
+            "geom": str(item.geom),
         }
         db_studies_transformed.append(study_info)
         return db_studies_transformed
@@ -49,25 +56,18 @@ def user_studies(
             db_studies_transformed = standardize_outputs(db_study, [])
             return {"studies": db_studies_transformed}
         else:
-            return JSONResponse(
-                content={"studies": ["Study not found!"]},
-                status_code=404
-            )
+            return JSONResponse(content={"studies": ["Study not found!"]}, status_code=404)
 
     if username is None:
         db_studies = crud.get_all_projects(db)
     else:
-        db_studies = crud.get_projects_by_user(
-            db, username)
+        db_studies = crud.get_projects_by_user(db, username)
 
     if db_studies is None or len(db_studies) == 0:
-        return JSONResponse(
-            content={"studies": ["No studies have been created yet!"]}
-        )
+        return JSONResponse(content={"studies": ["No studies have been created yet!"]})
     db_studies_transformed = []
 
     for item in db_studies:
-        db_studies_transformed = standardize_outputs(
-            item, db_studies_transformed)
+        db_studies_transformed = standardize_outputs(item, db_studies_transformed)
 
     return {"studies": db_studies_transformed}

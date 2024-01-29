@@ -1,9 +1,24 @@
+import os
+
+from dotenv import load_dotenv
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from routers import analyze, get_user_studies, rename, get_user_geoms, get_csv, get_user_segment, delete_flag, share
 
+from routers import (
+    analyze,
+    get_user_studies,
+    rename,
+    get_user_geoms,
+    get_csv,
+    get_user_segment,
+    delete_flag,
+    share,
+)
 
-app = FastAPI()
+load_dotenv()
+URL_ROOT = os.getenv("URL_ROOT")
+
+app = FastAPI(docs_url=f"{URL_ROOT}/docs", openapi_url=f"{URL_ROOT}/openapi.json")
 
 # tighten this up for production
 app.add_middleware(
@@ -24,6 +39,6 @@ app.include_router(delete_flag.router)
 app.include_router(share.router)
 
 
-@app.get("/")
+@app.get(f"{URL_ROOT}/")
 async def root():
     return {"message": "Go to /docs!"}
