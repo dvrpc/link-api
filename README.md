@@ -67,7 +67,7 @@ Start the development server with
 cd app
 uvicorn main:app --reload
 ```
-See what API calls are supported by visiting [localhost:8000/api/docs](localhost:8000/docs). (Note that the "/api" part of the path here comes from the `URL_ROOT` var defined in the .env file.)
+See what API calls are supported by visiting [localhost:8000/api/docs](localhost:8000/api/docs). (Note that the "/api" part of the path here comes from the `URL_ROOT` var defined in the .env file.)
 
 ## License
 The project uses the GPL 3.0 license.
