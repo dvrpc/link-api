@@ -7,7 +7,7 @@ from lts_island_connectivity import StudySegment, SegmentNameConflictError
 from data_structures import schemas
 
 load_dotenv()
-URL_ROOT = os.getenv("URL_ROOT")
+URL_ROOT = os.environ.get("URL_ROOT", "")
 
 router = APIRouter()
 

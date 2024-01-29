@@ -16,7 +16,8 @@ from routers import (
 )
 
 load_dotenv()
-URL_ROOT = os.getenv("URL_ROOT")
+URL_ROOT = os.environ.get("URL_ROOT", "")
+
 
 app = FastAPI(docs_url=f"{URL_ROOT}/docs", openapi_url=f"{URL_ROOT}/openapi.json")
 

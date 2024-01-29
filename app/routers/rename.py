@@ -7,7 +7,7 @@ from sqlalchemy.orm import Session
 from data_structures import crud, database, schemas
 
 load_dotenv()
-URL_ROOT = os.getenv("URL_ROOT")
+URL_ROOT = os.environ.get("URL_ROOT", "")
 
 router = APIRouter()
 

@@ -8,7 +8,7 @@ from sqlalchemy.orm import Session
 from data_structures import crud, database, schemas
 
 load_dotenv()
-URL_ROOT = os.getenv("URL_ROOT")
+URL_ROOT = os.environ.get("URL_ROOT", "")
 
 router = APIRouter()
 
@@ -39,9 +39,9 @@ def user_studies(
             "circuit": item.circuit,
             "total_jobs": item.total_jobs if item.total_jobs is not None else 0,
             "bike_ped_crashes": item.bike_ped_crashes if item.bike_ped_crashes is not None else 0,
-            "essential_services": item.essential_services
-            if item.essential_services is not None
-            else 0,
+            "essential_services": (
+                item.essential_services if item.essential_services is not None else 0
+            ),
             "rail_stations": item.rail_stations if item.rail_stations is not None else 0,
             "deleted": item.deleted if item.deleted is not None else False,
             "shared": item.shared if item.shared is not None else False,

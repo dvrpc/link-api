@@ -10,7 +10,7 @@ from fastapi import APIRouter, Depends, Response
 from data_structures import database
 
 load_dotenv()
-URL_ROOT = os.getenv("URL_ROOT")
+URL_ROOT = os.environ.get("URL_ROOT", "")
 
 router = APIRouter()
 
