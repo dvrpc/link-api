@@ -1,4 +1,5 @@
 import os
+from typing_extensions import Annotated
 
 from dotenv import load_dotenv
 from fastapi import APIRouter, Depends, Query
@@ -6,6 +7,7 @@ from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session
 
 from data_structures import crud, database, schemas
+from . import basic_auth
 
 load_dotenv()
 URL_ROOT = os.environ.get("URL_ROOT", "")
@@ -15,6 +17,7 @@ router = APIRouter()
 
 @router.get(f"{URL_ROOT}/get_user_studies/", response_model=schemas.UserStudies)
 def user_studies(
+    basic_auth: Annotated[str, Depends(basic_auth)],
     username: str = None,  # Optional parameter
     schema: str = Query(None, description="The schema to use (lts or sidewalk)"),
     study_name: str = Query(None, description="The name of the study to get, optional"),

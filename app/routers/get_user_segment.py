@@ -1,11 +1,13 @@
 import json
 import os
+from typing_extensions import Annotated
 
 from dotenv import load_dotenv
 from fastapi import APIRouter, Depends, Query
 from sqlalchemy.orm import Session
 
 from data_structures import crud, database, models, schemas
+from . import basic_auth
 
 load_dotenv()
 URL_ROOT = os.environ.get("URL_ROOT", "")
@@ -37,6 +39,7 @@ def get_segment_geometries(username: str, study: str, db: Session):
 
 @router.get(f"{URL_ROOT}/get_user_segment/", response_model=schemas.FeatureCollection)
 def user_study_segment_geoms(
+    basic_auth: Annotated[str, Depends(basic_auth)],
     username: str,
     study: str,
     schema: str = Query(..., description="The schema to use (lts or sidewalk)"),

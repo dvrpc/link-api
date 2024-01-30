@@ -1,5 +1,6 @@
 import json
 import os
+from typing_extensions import Annotated
 import tempfile
 import zipfile
 
@@ -9,6 +10,7 @@ from fastapi import APIRouter, BackgroundTasks, Depends, Query
 from sqlalchemy.orm import Session
 
 from data_structures import crud, database, models, schemas
+from . import basic_auth
 
 
 load_dotenv()
@@ -117,6 +119,7 @@ def save_as_geojson_and_zip(blobs, buffers, isochrones, segments, username, stud
 
 @router.get(f"{URL_ROOT}/get_user_study_geoms/", response_model=schemas.FeatureCollection)
 def user_study_geoms(
+    basic_auth: Annotated[str, Depends(basic_auth)],
     username: str,
     study: str,
     schema: str = Query(...),
@@ -128,6 +131,7 @@ def user_study_geoms(
 
 @router.get(f"{URL_ROOT}/download_user_study_geoms/")
 async def download_user_study_geoms(
+    basic_auth: Annotated[str, Depends(basic_auth)],
     username: str,
     study: str,
     schema: str = Query(...),

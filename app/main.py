@@ -1,7 +1,8 @@
 import os
+from typing_extensions import Annotated
 
 from dotenv import load_dotenv
-from fastapi import FastAPI
+from fastapi import Depends, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from routers import (
@@ -13,11 +14,11 @@ from routers import (
     get_user_segment,
     delete_flag,
     share,
+    basic_auth,
 )
 
 load_dotenv()
 URL_ROOT = os.environ.get("URL_ROOT", "")
-
 
 app = FastAPI(docs_url=f"{URL_ROOT}/docs", openapi_url=f"{URL_ROOT}/openapi.json")
 
@@ -41,5 +42,5 @@ app.include_router(share.router)
 
 
 @app.get(f"{URL_ROOT}/")
-async def root():
+async def root(basic_auth: Annotated[str, Depends(basic_auth)]):
     return {"message": "Go to /docs!"}
