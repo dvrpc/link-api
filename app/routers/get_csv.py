@@ -1,6 +1,7 @@
 import csv
 import io
 import os
+from typing_extensions import Annotated
 
 from dotenv import load_dotenv
 from sqlalchemy.sql import text
@@ -8,6 +9,7 @@ from sqlalchemy.orm import Session
 from fastapi import APIRouter, Depends, Response
 
 from data_structures import database
+from . import basic_auth
 
 load_dotenv()
 URL_ROOT = os.environ.get("URL_ROOT", "")
@@ -17,6 +19,7 @@ router = APIRouter()
 
 @router.get(f"{URL_ROOT}/get-csv/")
 def get_csv(
+    basic_auth: Annotated[str, Depends(basic_auth)],
     response: Response,
     schema: str,
     username: str,
