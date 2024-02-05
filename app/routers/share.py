@@ -14,7 +14,7 @@ URL_ROOT = os.environ.get("URL_ROOT", "")
 router = APIRouter()
 
 
-@router.get("/share/")
+@router.get(f"{URL_ROOT}/share/")
 def share(
     basic_auth: Annotated[str, Depends(basic_auth)],
     username: str,
