@@ -55,6 +55,11 @@ This is just another file with your pg credentials. If your virtual environment 
 ```shell
 pg make-config-file
 ```
+You can also use the '--filepath' flag if you'd like to specify another location besides the root directory. Only the 'localhost' info is needed, but other defaults are added automatically.
+```
+ pg make-config-file --filepath ~/path/to/database_connections.cfg
+```
+
 Then, edit the file (path will print to the terminal) and update your config settings.
 
 #### 6. Import database backup
