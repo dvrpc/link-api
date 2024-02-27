@@ -14,7 +14,7 @@ URL_ROOT = os.environ.get("URL_ROOT", "")
 router = APIRouter()
 
 
-@router.get(f"{URL_ROOT}/delete/")
+@router.get(f"{URL_ROOT}/delete")
 def delete(
     basic_auth: Annotated[str, Depends(basic_auth)],
     username: str,
