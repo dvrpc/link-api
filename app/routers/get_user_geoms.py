@@ -117,7 +117,7 @@ def save_as_geojson_and_zip(blobs, buffers, isochrones, segments, username, stud
     return zip_temp_path
 
 
-@router.get(f"{URL_ROOT}/get_user_study_geoms/", response_model=schemas.FeatureCollection)
+@router.get(f"{URL_ROOT}/get_user_study_geoms", response_model=schemas.FeatureCollection)
 def user_study_geoms(
     basic_auth: Annotated[str, Depends(basic_auth)],
     username: str,
@@ -129,7 +129,7 @@ def user_study_geoms(
     return format_as_feature_collection(blobs, buffers, isochrones)
 
 
-@router.get(f"{URL_ROOT}/download_user_study_geoms/")
+@router.get(f"{URL_ROOT}/download_user_study_geoms")
 async def download_user_study_geoms(
     basic_auth: Annotated[str, Depends(basic_auth)],
     username: str,

@@ -17,7 +17,7 @@ URL_ROOT = os.environ.get("URL_ROOT", "")
 router = APIRouter()
 
 
-@router.get(f"{URL_ROOT}/get-csv/")
+@router.get(f"{URL_ROOT}/get-csv")
 def get_csv(
     basic_auth: Annotated[str, Depends(basic_auth)],
     response: Response,

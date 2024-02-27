@@ -15,7 +15,7 @@ URL_ROOT = os.environ.get("URL_ROOT", "")
 router = APIRouter()
 
 
-@router.get(f"{URL_ROOT}/get_user_studies/", response_model=schemas.UserStudies)
+@router.get(f"{URL_ROOT}/get_user_studies", response_model=schemas.UserStudies)
 def user_studies(
     basic_auth: Annotated[str, Depends(basic_auth)],
     username: str = None,  # Optional parameter

@@ -20,7 +20,7 @@ else:
 router = APIRouter()
 
 
-@router.post(f"{URL_ROOT}/analyze/", response_model=schemas.AnalyzeResponse)
+@router.post(f"{URL_ROOT}/analyze", response_model=schemas.AnalyzeResponse)
 async def analyze_segment(
     basic_auth: Annotated[str, Depends(basic_auth)],
     data: schemas.AnalyzeRequest,

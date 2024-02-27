@@ -37,7 +37,7 @@ def get_segment_geometries(username: str, study: str, db: Session):
     return feature_collection
 
 
-@router.get(f"{URL_ROOT}/get_user_segment/", response_model=schemas.FeatureCollection)
+@router.get(f"{URL_ROOT}/get_user_segment", response_model=schemas.FeatureCollection)
 def user_study_segment_geoms(
     basic_auth: Annotated[str, Depends(basic_auth)],
     username: str,
