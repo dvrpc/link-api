@@ -11,11 +11,7 @@ from . import basic_auth
 
 load_dotenv()
 URL_ROOT = os.environ.get("URL_ROOT", "")
-if URL_ROOT:
-    pg_config_filepath = Path.home() / URL_ROOT.strip("/") / "database_connections.cfg"
-else:
-    pg_config_filepath = Path.home() / ".pg-data-etl" / "database_connections.cfg"
-
+pg_config_filepath = os.path.join(Path(__file__).parent.parent.parent, "database_connections.cfg")
 
 router = APIRouter()
 
