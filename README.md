@@ -50,17 +50,20 @@ URL_ROOT=/api
 ```
 
 #### 5. Add config file for pg-data-etl
-You also need to create a config file for pg-data-etl, which is used in the [LTS/sidewalk connectivity tool.](https://github.com/dvrpc/LTS_island_connectivity) 
-This is just another file with your pg credentials. If your virtual environment is activated, you can use:
-```shell
-pg make-config-file
-```
-You can also use the '--filepath' flag if you'd like to specify another location besides the root directory. Only the 'localhost' info is needed, but other defaults are added automatically.
-```
- pg make-config-file --filepath ~/path/to/database_connections.cfg
-```
+You'll need to add a configuration file for pg-data-etl at the root of this project. 
+It must be named 'database_connections.cfg', and should be formatted like this:
 
-Then, edit the file (path will print to the terminal) and update your config settings.
+
+```
+[localhost] 
+host = host
+un = postgres
+pw = password
+port = port
+db_name = db_name
+```
+Don't edit the localhost in brackets, as the script searches for it (see analyze endpoint) 
+but change all the other variables.
 
 #### 6. Import database backup
 If you're putting this onto a remote server, you need to pipe a copy of the database from a machine that's behind the DVRPC firewall, as all of the data import and setup scripts can only be run behind the firewall, pulling from DVRPC's GIS postgres server.
