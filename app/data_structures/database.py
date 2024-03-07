@@ -22,8 +22,28 @@ def after_begin_ped(session, transaction, connection):
     set_search_path(connection, "sidewalk")
 
 
-engine_bike = create_engine(DB_URI)
-engine_ped = create_engine(DB_URI)
+engine_bike = create_engine(
+    DB_URI,
+    pool_pre_ping=True,
+    pool_recycle=3600,
+    connect_args={
+        "keepalives": 1,
+        "keepalives_idle": 30,
+        "keepalives_interval": 10,
+        "keepalives_count": 5,
+    },
+)
+engine_ped = create_engine(
+    DB_URI,
+    pool_pre_ping=True,
+    pool_recycle=3600,
+    connect_args={
+        "keepalives": 1,
+        "keepalives_idle": 30,
+        "keepalives_interval": 10,
+        "keepalives_count": 5,
+    },
+)
 
 SessionLocalBike = sessionmaker(autocommit=False, autoflush=False, bind=engine_bike)
 SessionLocalPed = sessionmaker(autocommit=False, autoflush=False, bind=engine_ped)
