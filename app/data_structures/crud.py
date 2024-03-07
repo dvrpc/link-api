@@ -1,3 +1,4 @@
+import re
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import DBAPIError
 from sqlalchemy import update, func, or_, and_
@@ -94,6 +95,7 @@ def get_segment_geoms_by_user_study(db: Session, username: str, study: str, mode
 
 
 def rename_segment(db: Session, oldName: str, newName: str, username: str):
+    newName = re.sub(r"[^a-zA-Z0-9 ]", "", newName)
     stmt = (
         update(models.UserSegments)
         .where(
