@@ -11,7 +11,9 @@ from . import basic_auth
 
 load_dotenv()
 URL_ROOT = os.environ.get("URL_ROOT", "")
-pg_config_filepath = os.path.join(Path(__file__).parent.parent.parent, "database_connections.cfg")
+pg_config_filepath = os.path.join(
+    Path(__file__).parent.parent.parent, "database_connections.cfg"
+)
 
 router = APIRouter()
 
@@ -41,5 +43,7 @@ async def analyze_segment(
             )
         except SegmentNameConflictError as exc:
             raise HTTPException(status_code=400, detail=str(exc))
+        except RuntimeError as e:
+            raise HTTPException(status_code=500, detail=str(e))
 
     return {"message": "Segments processed successfully"}
