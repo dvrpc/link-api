@@ -2,6 +2,8 @@
 
 ## Overview
 This is an API for the [Link](https://github.com/dvrpc/link) react app. 
+Most of the calls use SQLAlchemy models and schemas to access a Postgres DB, but the /analyze endpoint uses 
+the LTS Connectivity tool (linked below). 
 
 It uses: 
 * FastAPI
