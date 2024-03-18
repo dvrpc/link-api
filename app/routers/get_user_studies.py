@@ -30,7 +30,7 @@ def user_studies(
             "has_isochrone": item.has_isochrone
             if item.has_isochrone is not None
             else False,
-            "miles": item.miles if item.miles is not None else 0,
+            "miles": round(item.miles, 2) if item.miles is not None else 0,
             "total_pop": item.total_pop if item.total_pop is not None else 0,
             "disabled": item.disabled if item.disabled is not None else 0,
             "ethnic_minority": item.ethnic_minority

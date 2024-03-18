@@ -26,13 +26,17 @@ def remove_file_later(path: str, background_tasks: BackgroundTasks):
 def fetch_user_study_geoms(username: str, study: str, db: Session):
     blobs = crud.get_geoms_by_user_study(db, username, study, models.UserBlobs)
     buffers = crud.get_geoms_by_user_study(db, username, study, models.UserBuffers)
-    isochrones = crud.get_geoms_by_user_study(db, username, study, models.UserIsochrones)
+    isochrones = crud.get_geoms_by_user_study(
+        db, username, study, models.UserIsochrones
+    )
 
     return blobs, buffers, isochrones
 
 
 def fetch_segment_geoms(username: str, study: str, db: Session):
-    segments = crud.get_segment_geoms_by_user_study(db, username, study, models.UserSegments)
+    segments = crud.get_segment_geoms_by_user_study(
+        db, username, study, models.UserSegments
+    )
 
     return segments
 
@@ -43,7 +47,9 @@ def format_as_feature_collection(blobs, buffers, isochrones):
         geom = json.loads(blobs.geometry)
         response.blobs = schemas.FeatureModel(
             type="Feature",
-            geometry=schemas.Geometry(type=geom["type"], coordinates=geom["coordinates"]),
+            geometry=schemas.Geometry(
+                type=geom["type"], coordinates=geom["coordinates"]
+            ),
             properties=None,
             id="blobs",
         )
@@ -55,7 +61,9 @@ def format_as_feature_collection(blobs, buffers, isochrones):
         geom = json.loads(buffers.geometry)
         response.buffers = schemas.FeatureModel(
             type="Feature",
-            geometry=schemas.Geometry(type=geom["type"], coordinates=geom["coordinates"]),
+            geometry=schemas.Geometry(
+                type=geom["type"], coordinates=geom["coordinates"]
+            ),
             properties=None,
             id="buffers",
         )
@@ -67,7 +75,9 @@ def format_as_feature_collection(blobs, buffers, isochrones):
         geom = json.loads(isochrones.geometry)
         response.isochrones = schemas.FeatureModel(
             type="Feature",
-            geometry=schemas.Geometry(type=geom["type"], coordinates=geom["coordinates"]),
+            geometry=schemas.Geometry(
+                type=geom["type"], coordinates=geom["coordinates"]
+            ),
             properties=None,
             id=("isochrones"),
         )
@@ -80,7 +90,9 @@ def format_as_feature_collection(blobs, buffers, isochrones):
         # No geometries found, return an error response
         return JSONResponse(
             status_code=404,
-            content={"message": "No geometries found for the specified user and study."},
+            content={
+                "message": "No geometries found for the specified user and study."
+            },
         )
 
     feature_collection = schemas.FeatureCollection(
@@ -102,7 +114,9 @@ def save_as_geojson_and_zip(blobs, buffers, isochrones, segments, username, stud
             if geom:
                 file_path = f"{geom_type}_{username}_{study}.geojson"
                 with open(file_path, "w") as file:
-                    json.dump({"type": "Feature", "geometry": json.loads(geom.geometry)}, file)
+                    json.dump(
+                        {"type": "Feature", "geometry": json.loads(geom.geometry)}, file
+                    )
                 zipf.write(file_path, os.path.basename(file_path))
                 os.remove(file_path)
 
@@ -117,7 +131,9 @@ def save_as_geojson_and_zip(blobs, buffers, isochrones, segments, username, stud
     return zip_temp_path
 
 
-@router.get(f"{URL_ROOT}/get_user_study_geoms", response_model=schemas.FeatureCollection)
+@router.get(
+    f"{URL_ROOT}/get_user_study_geoms", response_model=schemas.FeatureCollection
+)
 def user_study_geoms(
     basic_auth: Annotated[str, Depends(basic_auth)],
     username: str,
@@ -140,7 +156,9 @@ async def download_user_study_geoms(
 ):
     blobs, buffers, isochrones = fetch_user_study_geoms(username, study, db)
     segments = fetch_segment_geoms(username, study, db)
-    zip_temp_path = save_as_geojson_and_zip(blobs, buffers, isochrones, segments, username, study)
+    zip_temp_path = save_as_geojson_and_zip(
+        blobs, buffers, isochrones, segments, username, study
+    )
 
     background_tasks.add_task(os.remove, zip_temp_path)
 

@@ -26,7 +26,7 @@ def get_csv(
     db: Session = Depends(database.get_db_for_schema),
 ):
     query = text(
-        f"SELECT * FROM {schema}.user_segments where username = {username} and deleted is not true"
+        f"SELECT * FROM {schema}.user_segments where username = '{username}' and deleted is not true"
     )
 
     result = db.execute(query)
