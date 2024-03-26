@@ -1,6 +1,7 @@
 import os
 from typing_extensions import Annotated
 from pathlib import Path
+from requests.exceptions import JSONDecodeError
 
 from fastapi import APIRouter, Depends, HTTPException, Query
 from dotenv import load_dotenv
@@ -45,5 +46,8 @@ async def analyze_segment(
             raise HTTPException(status_code=400, detail=str(exc))
         except RuntimeError as e:
             raise HTTPException(status_code=500, detail=str(e))
+        except JSONDecodeError:
+            print("invalid geojson")
+            print(feature)
 
     return {"message": "Segments processed successfully"}
