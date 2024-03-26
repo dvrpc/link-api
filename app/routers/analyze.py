@@ -47,7 +47,13 @@ async def analyze_segment(
         except RuntimeError as e:
             raise HTTPException(status_code=500, detail=str(e))
         except JSONDecodeError:
-            print("invalid geojson")
+            raise HTTPException(
+                status_code=400,
+                detail=(
+                    "This might be a multiline, try clicking select all, then uncombine, before running analyze again."
+                ),
+            )
+            print("feature that threw error:")
             print(feature)
 
     return {"message": "Segments processed successfully"}
