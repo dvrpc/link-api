@@ -47,12 +47,8 @@ async def analyze_segment(
         except RuntimeError as e:
             raise HTTPException(status_code=500, detail=str(e))
         except JSONDecodeError:
-            raise HTTPException(
-                status_code=400,
-                detail=(
-                    "This might be a multiline, try clicking select all, then uncombine, before running analyze again."
-                ),
-            )
+            r = "You might have a multiline in your dataset. Reupload your dataset, then click select all, then uncombine, before running. You can combine specific features if you want to run them together, from LINK's interface, as sometimes multilines from outside GIS programs can cause errors."
+            raise HTTPException(status_code=400, detail=(str(r)))
             print("feature that threw error:")
             print(feature)
 
