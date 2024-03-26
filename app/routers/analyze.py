@@ -2,6 +2,9 @@ import os
 from typing_extensions import Annotated
 from pathlib import Path
 from requests.exceptions import JSONDecodeError
+import time
+from requests.exceptions import ConnectionError
+import psycopg2
 
 from fastapi import APIRouter, Depends, HTTPException, Query
 from dotenv import load_dotenv
@@ -33,23 +36,41 @@ async def analyze_segment(
         raise HTTPException(
             status_code=422, detail="Connection type must be 'bike' or 'pedestrian'"
         )
+
+    max_retries = 5
+    initial_wait_time = 10  # seconds
     for feature in data.geo_json.features:
-        try:
-            StudySegment(
-                cx_type,
-                feature.dict(),
-                data.username,
-                overwrite=overwrite,
-                pg_config_filepath=pg_config_filepath,
-            )
-        except SegmentNameConflictError as exc:
-            raise HTTPException(status_code=400, detail=str(exc))
-        except RuntimeError as e:
-            raise HTTPException(status_code=500, detail=str(e))
-        except JSONDecodeError:
-            r = "You might have a multiline in your dataset. Reupload your dataset, then click select all, then uncombine, before running. You can combine specific features if you want to run them together, from LINK's interface, as sometimes multilines from outside GIS programs can cause errors."
-            raise HTTPException(status_code=400, detail=(str(r)))
-            print("feature that threw error:")
-            print(feature)
+        attempt = 0
+        while attempt < max_retries:
+            try:
+                StudySegment(
+                    cx_type,
+                    feature.dict(),
+                    data.username,
+                    overwrite=overwrite,
+                    pg_config_filepath=pg_config_filepath,
+                )
+                break
+            except SegmentNameConflictError as exc:
+                raise HTTPException(status_code=400, detail=str(exc))
+            except RuntimeError as e:
+                raise HTTPException(status_code=500, detail=str(e))
+            except JSONDecodeError:
+                r = "You might have a multiline in your dataset..."
+                raise HTTPException(status_code=400, detail=str(r))
+            except psycopg2.errors.InternalError_ as e:
+                print(f"PostgreSQL Internal Error encountered: {e}")
+                print(feature)
+                break
+            except ConnectionError:
+                if attempt >= max_retries - 1:
+                    print(f"Maximum retry attempts reached for feature: {feature}")
+                    break
+                print(
+                    f"Encountered a connection error. Retrying in {initial_wait_time * (2 ** attempt)} seconds..."
+                )
+                time.sleep(initial_wait_time * (2**attempt))
+                overwrite = True
+                attempt += 1
 
     return {"message": "Segments processed successfully"}
