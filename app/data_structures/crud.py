@@ -96,16 +96,23 @@ def get_segment_geoms_by_user_study(db: Session, username: str, study: str, mode
 
 def rename_segment(db: Session, oldName: str, newName: str, username: str):
     newName = re.sub(r"[^a-zA-Z0-9 ]", "", newName)
-    stmt = (
-        update(models.UserSegments)
-        .where(
-            (models.UserSegments.username == username)
-            & (models.UserSegments.seg_name == oldName)
-        )
-        .values(seg_name=newName)
+    exists = (
+        db.query(models.UserSegments.seg_name).filter_by(seg_name=newName).first()
+        is not None
     )
-    db.execute(stmt)
-    db.commit()
+    if not exists:
+        stmt = (
+            update(models.UserSegments)
+            .where(
+                (models.UserSegments.username == username)
+                & (models.UserSegments.seg_name == oldName)
+            )
+            .values(seg_name=newName)
+        )
+        db.execute(stmt)
+        db.commit()
+    else:
+        raise ValueError("Segment name was already used, try a different name.")
 
 
 def share_study(db: Session, username: str, seg_name: str, share: bool):
