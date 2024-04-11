@@ -2,7 +2,7 @@ import os
 from typing_extensions import Annotated
 
 from dotenv import load_dotenv
-from fastapi import APIRouter, Depends, Query
+from fastapi import APIRouter, Depends, Query, HTTPException
 from sqlalchemy.orm import Session
 
 from data_structures import crud, database, schemas
@@ -22,6 +22,9 @@ def analyze_segment(
     schema: str = Query(..., description="The schema to use (lts or sidewalk)"),
     db: Session = Depends(database.get_db_for_schema),
 ):
-    db_studies = crud.rename_segment(db, data.oldName, data.newName, username)
+    try:
+        db_studies = crud.rename_segment(db, data.oldName, data.newName, username)
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc))
 
     return {"message": f"Data received: {db_studies}"}
