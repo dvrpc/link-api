@@ -45,17 +45,21 @@ def user_studies(
             if item.racial_minority is not None
             else 0,
             "youth": item.youth if item.youth is not None else 0,
-            "circuit": item.circuit,
+            "circuit": item.circuit
+            if item.circuit is not None and isinstance(item.circuit, list)
+            else [],
             "total_jobs": item.total_jobs if item.total_jobs is not None else 0,
             "bike_ped_crashes": item.bike_ped_crashes
             if item.bike_ped_crashes is not None
-            else 0,
-            "essential_services": (
-                item.essential_services if item.essential_services is not None else 0
-            ),
+            and isinstance(item.bike_ped_crashes, list)
+            else [],
+            "essential_services": item.essential_services
+            if item.essential_services is not None
+            and isinstance(item.essential_services, list)
+            else [],
             "rail_stations": item.rail_stations
-            if item.rail_stations is not None
-            else 0,
+            if item.rail_stations is not None and isinstance(item.rail_stations, list)
+            else [],
             "deleted": item.deleted if item.deleted is not None else False,
             "shared": item.shared if item.shared is not None else False,
             "geom": str(item.geom),
