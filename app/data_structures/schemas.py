@@ -1,5 +1,5 @@
 from pydantic import BaseModel, Field
-from typing import List, Any, Optional, Literal
+from typing import List, Any, Optional, Union, Literal
 from enum import Enum
 
 
@@ -20,10 +20,10 @@ class Geometry(BaseModel):
 
 
 class FeatureModel(BaseModel):
-    type: str = 'Feature'
+    type: str = "Feature"
     geometry: Optional[Geometry] = None
     properties: Optional[dict] = None
-    id: Optional[str] = None
+    id: Optional[Union[str, int]] = None
 
 
 class GeoJson(BaseModel):
@@ -66,8 +66,8 @@ class UserStudies(BaseModel):
 
 
 class RenameRequest(BaseModel):
-    oldName: str = Field(..., alias='oldName')
-    newName: str = Field(..., alias='newName')
+    oldName: str = Field(..., alias="oldName")
+    newName: str = Field(..., alias="newName")
 
 
 class Geom(BaseModel):
@@ -91,6 +91,7 @@ class FeatureCollection(BaseModel):
 
 class AnalyzeRequest(BaseModel):
     """For any requests coming in from the analyze button."""
+
     connection_type: str
     geo_json: FeatureCollection
     username: str
