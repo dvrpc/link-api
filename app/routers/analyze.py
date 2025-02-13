@@ -5,15 +5,12 @@ from requests.exceptions import JSONDecodeError
 import time
 from requests.exceptions import ConnectionError
 import psycopg2
-import re
 
 from fastapi import APIRouter, Depends, HTTPException, Query
 from dotenv import load_dotenv
 from lts_island_connectivity import StudySegment, SegmentNameConflictError
-from geoalchemy2 import WKTElement
-from sqlalchemy.orm import Session
 
-from data_structures import schemas, database, crud
+from data_structures import schemas
 from . import basic_auth
 
 load_dotenv()
