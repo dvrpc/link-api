@@ -1,6 +1,6 @@
 fastapi==0.103.1
 httptools==0.6.0
-lts-island-connectivity @ git+https://github.com/dvrpc/LTS_island_connectivity@0.2.4#egg=lts-island-connectivity
+lts-island-connectivity @ git+https://github.com/dvrpc/LTS_island_connectivity@0.2.5#egg=lts-island-connectivity
 pyyaml==6.0.1
 uvicorn==0.23.2
 uvloop==0.17.0
