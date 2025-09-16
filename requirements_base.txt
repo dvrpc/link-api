@@ -1,9 +1,11 @@
-fastapi==0.103.1
-httptools==0.6.0
-lts-island-connectivity @ git+https://github.com/dvrpc/LTS_island_connectivity@0.2.3#egg=lts-island-connectivity
-pyyaml==6.0.1
-uvicorn==0.23.2
-uvloop==0.17.0
-watchfiles==0.20.0
-websockets==11.0.3
-wheel==0.42.0
+fastapi==0.103.*
+httptools==0.6.*
+lts-island-connectivity @ git+https://github.com/dvrpc/LTS_island_connectivity@0.2.5#egg=lts-island-connectivity
+psycopg==3.2.*
+pyyaml==6.0.*
+sqlalchemy==2.0.*
+uvicorn==0.23.*
+uvloop==0.17.*
+watchfiles==0.20.*
+websockets==11.0.*
+wheel==0.42.*
