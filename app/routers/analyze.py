@@ -4,7 +4,7 @@ from pathlib import Path
 from requests.exceptions import JSONDecodeError
 import time
 from requests.exceptions import ConnectionError
-import psycopg2
+import psycopg
 
 from fastapi import APIRouter, Depends, HTTPException, Query
 from dotenv import load_dotenv
@@ -15,9 +15,7 @@ from . import basic_auth
 
 load_dotenv()
 URL_ROOT = os.environ.get("URL_ROOT", "")
-pg_config_filepath = os.path.join(
-    Path(__file__).parent.parent.parent, "database_connections.cfg"
-)
+pg_config_filepath = os.path.join(Path(__file__).parent.parent.parent, "database_connections.cfg")
 
 router = APIRouter()
 
@@ -85,7 +83,7 @@ async def analyze_segment(
             except JSONDecodeError:
                 r = "You might have a multiline in your dataset..."
                 raise HTTPException(status_code=400, detail=str(r))
-            except psycopg2.errors.InternalError_ as e:
+            except psycopg.errors.InternalError_ as e:
                 print(f"PostgreSQL Internal Error encountered: {e}")
                 print(feature)
                 break
@@ -94,7 +92,7 @@ async def analyze_segment(
                     print(f"Maximum retry attempts reached for feature: {feature}")
                     break
                 print(
-                    f"Encountered a connection error. Retrying in {initial_wait_time * (2 ** attempt)} seconds..."
+                    f"Encountered a connection error. Retrying in {initial_wait_time * (2**attempt)} seconds..."
                 )
                 time.sleep(initial_wait_time * (2**attempt))
                 overwrite = True
