@@ -16,13 +16,13 @@ It uses:
 
 #### 1. Install dependencies, if not installed. For postgres with extensions, consider using
 ```shell
-sudo apt install postgresql-15-pgrouting
+sudo apt install postgresql-16-pgrouting
 ```
 which will install PostgreSQL, PostGIS, and PGrouting. If you have postgres already, you need to install the other two individually. Setup any roles you want.
 
 You also need ogr2ogr. For Linux:
 ```shell
-  sudo apt-get install gdal-bin
+  sudo apt install gdal-bin
 ```
 
 #### 2. Create an empty virtual environment
