@@ -24,7 +24,7 @@ def delete_incomplete_study(username, schema, seg_name):
     DB_URI = os.environ.get("DB_URI", "")
 
     try:
-        conn = psycopg2.connect(DB_URI)
+        conn = psycopg.connect(DB_URI)
     except:
         print("Unable to connect to database")
     
@@ -39,7 +39,7 @@ def delete_incomplete_study(username, schema, seg_name):
             curs.execute(query)
             rows_deleted = curs.rowcount;
             conn.commit()
-        except (Exception, psycopg2.DatabaseError) as error:
+        except (Exception, psycopg.DatabaseError) as error:
             print(error)
         finally:
             print(f"Deleted {rows_deleted} incomplete study")
