@@ -32,6 +32,7 @@ class UserSegments(Base):
     rail_stations = Column(JSON)
     deleted = Column(Boolean)
     shared = Column(Boolean)
+    archived = Column(Boolean)
     geom = Column(Geometry(geometry_type="LINESTRING", srid=4326))
 
     user_blobs = relationship(

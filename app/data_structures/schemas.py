@@ -53,6 +53,7 @@ class UserStudy(BaseModel):
     rail_stations: Any
     deleted: bool
     shared: bool
+    archived: bool
     geom: str
 
     @classmethod
