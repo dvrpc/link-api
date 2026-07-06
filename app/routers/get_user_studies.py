@@ -62,6 +62,7 @@ def user_studies(
             else [],
             "deleted": item.deleted if item.deleted is not None else False,
             "shared": item.shared if item.shared is not None else False,
+            "archived": item.archived if item.archived is not None else False,
             "geom": str(item.geom),
         }
         db_studies_transformed.append(study_info)
